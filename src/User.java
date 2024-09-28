@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Scanner;
 
+
 public class User {
     private String email;
     private String senha;
@@ -13,6 +14,14 @@ public class User {
     private ArrayList<Follow> followers;
 
     public User() {
+    }
+
+    public User(String email, String senha, String nome, String relacionamento, int idade) {
+        this.email = email;
+        this.senha = senha;
+        this.nome = nome;
+        this.relacionamento = relacionamento;
+        this.idade = idade;
     }
 
     public User(String email, String senha, String nome, String relacionamento, int idade, int id, ArrayList<Post> posts, ArrayList<Follow> followers) {
@@ -116,22 +125,25 @@ public class User {
         System.out.println("Nome: " + this.nome);
         System.out.println("Relacionamento: " + this.relacionamento);
         System.out.println("Idade: " + this.idade);
+        System.out.println("ID: " + this.id);
     }
 
     public User Cadastro_Login(ArrayList<User> users) {
         int escolha;
+        int constante = 5;
         Scanner scanner = new Scanner(System.in);
         User logado = new User();
 
         do {
-
+            logado.Interface_Login_Cadastro();
             escolha = scanner.nextInt();
             switch (escolha) {
                 case 1:
-                    logado.Interface();
                     User usuario = new User();
                     usuario.Fazer_Cadastro();
                     users.add(usuario);
+                    constante++;
+                    usuario.setId(constante);
                     usuario.Status();
                     break;
                 case 2:
@@ -139,10 +151,10 @@ public class User {
                     String teste_email = scanner.next();
                     System.out.println("Escreva seu senha");
                     String teste_senha = scanner.next();
-                    for (int i =0; i<users.size(); i++){
-                        if(users.get(i).getEmail().contentEquals(teste_email) && users.get(i).getSenha().contentEquals(teste_senha)){
+                    for (User user : users){
+                        if(user.getEmail().contentEquals(teste_email) && user.getSenha().contentEquals(teste_senha)){
                             System.out.println("Voce foi logado");
-                            logado = users.get(i);
+                            logado = user;
                             escolha = 0;
                             break;
                         }
@@ -152,9 +164,39 @@ public class User {
         return logado;
     }
 
-    public void Interface() {
+    public void Interface_Login_Cadastro() {
         System.out.println("Bem vindo ao Megaz");
         System.out.println("1 Cadastro ");
         System.out.println("2 Login ");
     }
+
+    public void Interface_Changes() {
+        System.out.println("what do you want to change?");
+        System.out.println("1 Change password");
+        System.out.println("2 Change relationship");
+        System.out.println("3 Change Name");
+        System.out.println("0 Back");
+    }
+
+    public User Change_Password(User usuario) {
+        Scanner scanner = new Scanner(System.in);
+        int escolha3 = 0;
+        do {
+
+            System.out.println("Write your password");
+            String teste_senha = scanner.next();
+            System.out.println(teste_senha + "    " + usuario.getSenha());
+            if(teste_senha.equals(usuario.getSenha())){
+                System.out.println("Write your new password");
+                String nova_senha = scanner.next();
+                usuario.setSenha(nova_senha);
+                escolha3 = 23; // aft
+            }
+            else{
+                System.out.println("Incorrect password, try again");
+            }
+        }while(escolha3!=23);
+        return usuario;
+    }
+
 }
